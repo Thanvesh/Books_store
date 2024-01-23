@@ -1,0 +1,70 @@
+
+
+.header-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left:40px ;
+    padding-right: 40px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color:#848F95 ;
+    height:20px;
+    align-items: center;
+}
+
+
+.logo-title{
+    font-family: "Roboto";
+    font-size: 20px;
+    color: #FCFCFC;
+    font-weight: 600;
+    font-style: italic;
+    margin-top:1px ;
+    margin-bottom: 1px;
+}
+.logo-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: content-box;
+
+
+}
+.header-link{
+    text-decoration: none;
+    color: inherit;
+}
+
+.header-list-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    list-style-type: none;
+}
+
+
+.header-list-item{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.header-list-item-icon{
+    width: 50px;
+    height: 20px;
+    color: #252B72;
+
+}
+.header-icon{
+    width: 50px;
+    height: 20px;
+    margin-bottom: 5PX;
+    color:#FFEB3B;
+
+}
+.header-list-item-text{
+    margin-left: 0px;
+    text-decoration: none;
+}
