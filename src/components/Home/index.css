@@ -1,0 +1,210 @@
+.home-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: #079992;
+    padding: 30px;
+    background-size: cover;
+}
+.spinner{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 100vh;
+
+}
+
+.banner-container{
+    box-sizing: content-box;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 40px;
+    width: 90%;
+
+
+    
+}
+
+.banner-text{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items:center ;
+    width: 30%;
+    
+
+}
+
+.carousel-container {
+    width: 30%;
+
+
+}
+
+.slide-item {
+    align-self:center;
+}
+
+img {
+    min-width: 100px;
+    max-width: 200px;
+    max-height: 300px;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+
+
+.banner-title{
+    font-size: 35px;
+    font-family: "Roboto";
+    font-style: italic;
+    font-weight: 700;
+    color: #000000;
+    
+
+}
+
+.banner-desc{
+    font-size: 18px;
+    font-family: "Roboto";
+    color: #adb9b9;
+    opacity: 1;
+    font-weight: 500;
+}
+
+.explore-more {
+    text-decoration: none;
+
+}
+
+.button-explore {
+    padding: 10px 20px;
+    background-color: #3a015e;
+    /* Adjust the background color to match your design */
+    color:#ffffff;
+    cursor: pointer;
+    border-radius: 10px;
+    border: 0px solid;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    align-self: center;
+
+
+}
+
+.newbooks-container{
+   width: 90%;
+   text-align: center;
+   align-self: center;
+
+}
+
+.card-container {
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin-top: 30px;
+
+}
+
+.card-list-item {
+    width: 20%;
+    margin: 30px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border: opx solid #050633;
+    background-color: #ffffff;
+    border-radius: 20px;
+
+    backdrop-filter: blur(5px); /* Adjust the blur amount */
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+
+    /* Additional styling goes here */
+}
+.card-image{
+    width: 100%;
+    height: 150px; /* Maintain aspect ratio */
+    min-height: 180px; /* Set a minimum height */
+    object-fit: cover;
+    align-self: center;
+}
+
+.card-title{
+    font-family: "sans serif";
+    font-size: 18px;
+    font-weight: 600;
+    color: #050633;
+    width: 230px;
+    align-self: flex-start;
+}
+
+.card-price{
+    font-family: "sans serif";
+    font-size: 20px;
+    color: #440314;
+    font-weight: 700;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    text-align: start;
+    align-self: flex-start;
+
+}
+
+.card-button{
+    background-color: #000000;
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 10px 20px;
+    text-align: center;
+    border: 0px solid;
+    cursor: pointer;
+    align-self: flex-end;
+    margin-top: 0px;
+}
+
+.newbook-card-details{
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    
+}
+
+/* Media queries for responsive layout */
+@media screen and (max-width: 1200px) {
+    .card-list-item {
+        width: 30%; /* Adjust the width for medium-sized devices */
+    }
+
+    .card-title{
+        font-size: 20px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .card-list-item {
+        width: 45%; /* Adjust the width for smaller devices like tablets */
+    }
+    .card-title{
+        font-size: 18px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .card-list-item {
+        width: 100%; /* Full width for mobile devices */
+    }
+    .card-title{
+        font-size: 15px;
+    }
+}
+
