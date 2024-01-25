@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import './App.css';
 import Header from "./components/Header";
 import Home from './components/Home';
-
+import BookList  from './components/BookList';
 
 
 const App = () => {
@@ -35,12 +35,8 @@ const App = () => {
     <BrowserRouter>
       <Header />
       <Routes>
-        <Route
-          path="/"
-          element={
-            <Home bannerData={bookList} loading={loading} />
-          }
-        />
+        <Route path="/" element={<Home bannerData={bookList} loading={loading} />}/>
+        <Route excat path="/Book" element={<BookList bannerData={bookList.books} />}/>
       </Routes>
     </BrowserRouter>
   );

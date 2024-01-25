@@ -4,7 +4,8 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { Link } from "react-router-dom"
-import { Vortex } from 'react-loader-spinner'
+import Loader from "../Loader"
+
 
 
 
@@ -39,18 +40,8 @@ const Home = (props) => {
     return (
         <div className="home-container">
 
-            {loading ? (
-            <div className="spinner">
-                <Vortex
-            visible={true}
-            height="80"
-            width="80"
-            ariaLabel="vortex-loading"
-            wrapperStyle={{}}
-            wrapperClass="vortex-wrapper"
-            colors={['red', 'green', 'blue', 'yellow', 'orange', 'purple']}
-        /> 
-        </div> ) : (
+            {loading ? (<Loader/>
+            ) : (
                 <>
                     <ul className="banner-container">
                         <div className="banner-text">
