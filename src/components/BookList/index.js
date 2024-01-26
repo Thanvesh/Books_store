@@ -129,9 +129,7 @@ const BookList = (props) => {
 
 
 
-    function renderSuccessView() {
-
-
+    const renderSuccessView=()=> {
         return (
             <div className="books-main-container">
                 <h1 className="heading"><Link to="/" className="text">Home</Link>/<Link to="/Books" className="text-book">Books</Link></h1>
@@ -157,13 +155,16 @@ const BookList = (props) => {
                     </div>
                     <ul className="book-list-container">
                         {filteredData.map((book) => (
+
                             <li key={book.isbn13} className="book-card">
-                                <img className="card-image" src={book.image} alt={book.title} />
-                                <div className="card-text-details">
-                                    <h1 className="card-title">{book.title}</h1>
-                                    <p className="card-price">₹{book.price}</p>
-                                    <button className="card-button" type="button">Order Now</button>
-                                </div>
+                                <Link to={`/Book/${book.isbn13}`}>
+                                    <img className="card-image" src={book.image} alt={book.title} />
+                                    <div className="card-text-details">
+                                        <h1 className="card-title">{book.title}</h1>
+                                        <p className="card-price">₹{book.price}</p>
+                                        <button className="card-button" type="button">Order Now</button>
+                                    </div>
+                                </Link>
                             </li>
                         ))}
 
@@ -172,12 +173,14 @@ const BookList = (props) => {
                     <ul className="book-list-container">
                         {filteredBooks.map((book) => (
                             <li key={book.isbn13} className="book-card">
-                                <img className="card-image" src={book.image} alt={book.title} />
-                                <div className="card-text-details">
-                                    <h1 className="card-title">{book.title}</h1>
-                                    <p className="card-price">₹{book.price}</p>
-                                    <button className="card-button" type="button">Order Now</button>
-                                </div>
+                                <Link to={`/Book/${book.isbn13}`}>
+                                    <img className="card-image" src={book.image} alt={book.title} />
+                                    <div className="card-text-details">
+                                        <h1 className="card-title">{book.title}</h1>
+                                        <p className="card-price">₹{book.price}</p>
+                                        <button className="card-button" type="button">Order Now</button>
+                                    </div>
+                                </Link>
                             </li>
                         ))}
 

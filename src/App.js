@@ -1,9 +1,11 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from "react"
-import './App.css';
+
 import Header from "./components/Header";
 import Home from './components/Home';
 import BookList  from './components/BookList';
+import BookDetails from './components/BookDetails';
+import './App.css';
 
 
 const App = () => {
@@ -30,13 +32,13 @@ const App = () => {
     booksData();
   }, []);
 
-  console.log(bookList)
   return (
     <BrowserRouter>
       <Header />
       <Routes>
         <Route path="/" element={<Home bannerData={bookList} loading={loading} />}/>
-        <Route excat path="/Book" element={<BookList bannerData={bookList.books} />}/>
+        <Route  path="/Book" exact element={<BookList bannerData={bookList.books} />}/>
+        <Route  path="/Book/:isbn13" exact element={<BookDetails/>}/>
       </Routes>
     </BrowserRouter>
   );
