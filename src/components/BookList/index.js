@@ -5,6 +5,10 @@ import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSort } from '@fortawesome/free-solid-svg-icons';
+import Pagination from "../Pagination";
+import { useCart } from '../CartContext';
+
+import filterData from "../filterUtils";
 import "./index.css"
 
 
@@ -19,23 +23,26 @@ const renderConstraints = {
 }
 
 
-const BookList = (props) => {
-    const { bannerData, } = props
+const BookList = () => {
+
 
     const [booksData, setBooksData] = useState({ total: '0', books: [], })
+    const [newBooksData, setNewBooksData] = useState({ total: '0', books: [], })
     const [apiStatus, setApistatus] = useState(renderConstraints.initial)
     const [searchValue, setSearchValue] = useState("")
     const [showPriceRange, setShowPriceRange] = useState(false);
     const [priceRange, setPriceRange] = useState([0, 100]); // Initial price range
+    const [currentPage, setCurrentPage] = useState(1);
+    const { dispatch } = useCart();
 
 
 
 
 
-    const getBookDetails = async () => {
+    const getBookDetails = async (currentPage) => {
         setApistatus(renderConstraints.loading)
         try {
-            const response = await fetch("https://api.itbook.store/1.0/search/mongodb");
+            const response = await fetch(`https://api.itbook.store/1.0/search/mongodb?page=${currentPage}`);
             const data = await response.json();
             setBooksData({ total: data.total, books: data.books });
             setApistatus(renderConstraints.success)
@@ -45,10 +52,30 @@ const BookList = (props) => {
         }
     };
 
-    useEffect(() => {
+    const getNewBooks = async () => {
+        setApistatus(renderConstraints.loading)
+        try {
+            const response = await fetch("https://api.itbook.store/1.0/new");
+            const data = await response.json();
+            setNewBooksData({ total: data.total, books: data.books });
+            setApistatus(renderConstraints.success)
+        } catch (error) {
+            console.error("Error Fetching Data:", error);
+            setApistatus(renderConstraints.fail)
+        }
 
-        getBookDetails()
-    }, [])
+    }
+
+    useEffect(() => {
+        if (currentPage === 1) {
+            getBookDetails(currentPage);
+            getNewBooks();
+        } else {
+            getBookDetails(currentPage);
+        }
+    }, [currentPage]);
+
+
 
     const handleTryAgain = () => (
         getBookDetails()
@@ -65,6 +92,9 @@ const BookList = (props) => {
         </div>
     )
 
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
 
     const handlePriceChange = (value) => {
         setPriceRange(value);
@@ -79,7 +109,9 @@ const BookList = (props) => {
 
         handleTogglePriceRange();
     };
-
+    const handleAddToCart = (book) => {
+        dispatch({ type: 'ADD_TO_CART', payload: book });
+      };
 
     const handleSearchInput = (event) => {
         setSearchValue(event.target.value)
@@ -87,52 +119,16 @@ const BookList = (props) => {
 
     }
 
-    const filteredData = searchValue ? booksData.books.filter(item => {
-        const itemTitle = item.title ? item.title.toLowerCase() : "";
-        const itemPrice = parseFloat(item.price.replace(/[^\d.]/g, ''));
-
-        return (
-            itemTitle.includes(searchValue.toLowerCase()) &&
-            itemPrice >= priceRange[0] &&
-            itemPrice <= priceRange[1]
-        )
-    }) : booksData.books.filter(item => {
-        const itemPrice = parseFloat(item.price.replace(/[^\d.]/g, ''));
-
-        return (
-            itemPrice >= priceRange[0] &&
-            itemPrice <= priceRange[1]
-        )
-    })
-
-
-
-    const filteredBooks = searchValue ? bannerData.filter(book => {
-        const bookTitle = book.title ? book.title.toLowerCase() : "";
-        const bookPrice = parseFloat(book.price.replace(/[^\d.]/g, ''));
-
-        return (
-            bookTitle.includes(searchValue.toLowerCase()) &&
-            bookPrice >= priceRange[0] &&
-            bookPrice <= priceRange[1]
-        )
-    }) : bannerData.filter(book => {
-        const bookPrice = parseFloat(book.price.replace(/[^\d.]/g, ''));
-
-        return (
-            bookPrice >= priceRange[0] &&
-            bookPrice <= priceRange[1]
-        )
-    })
+    const filteredData = filterData(booksData, searchValue, priceRange);
+    const filteredBooks = filterData(newBooksData, searchValue, priceRange);
 
 
 
 
-
-    const renderSuccessView=()=> {
+    const renderSuccessView = () => {
         return (
             <div className="books-main-container">
-                <h1 className="heading"><Link to="/" className="text">Home</Link>/<Link to="/Books" className="text-book">Books</Link></h1>
+                <h1 className="heading"><Link to="/" className="text">Home</Link>/<Link to="/Book" className="text-book">Books</Link></h1>
                 <div className="books-filter-container">
                     <div className="search-sort-container">
                         <div className="search-container">
@@ -162,14 +158,15 @@ const BookList = (props) => {
                                     <div className="card-text-details">
                                         <h1 className="card-title">{book.title}</h1>
                                         <p className="card-price">₹{book.price}</p>
-                                        <button className="card-button" type="button">Order Now</button>
+                                        <button className="card-button" type="button" onClick={()=>handleAddToCart(book)}>Add To Cart</button>
                                     </div>
                                 </Link>
                             </li>
                         ))}
 
                     </ul>
-                    <h1 className="new-books-heading">Newly Released Section </h1>
+
+                    {currentPage === 1 ? (<><h1 className="new-books-heading">Newly Released Section </h1>
                     <ul className="book-list-container">
                         {filteredBooks.map((book) => (
                             <li key={book.isbn13} className="book-card">
@@ -178,14 +175,20 @@ const BookList = (props) => {
                                     <div className="card-text-details">
                                         <h1 className="card-title">{book.title}</h1>
                                         <p className="card-price">₹{book.price}</p>
-                                        <button className="card-button" type="button">Order Now</button>
+                                        <button className="card-button" type="button" onClick={()=>handleAddToCart(book)}>Add To Cart</button>
                                     </div>
                                 </Link>
                             </li>
                         ))}
 
-                    </ul>
+                    </ul></>):""}
+
                 </div>
+
+                <Pagination
+                    currentPage={currentPage}
+                    onPageChange={handlePageChange}
+                />
                 <div className="mobile-sort">
 
                     {showPriceRange && (

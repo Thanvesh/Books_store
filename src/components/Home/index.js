@@ -1,10 +1,12 @@
 
-import "./index.css"
+
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { Link } from "react-router-dom"
 import Loader from "../Loader"
+import { useCart } from '../CartContext';
+import "./index.css"
 
 
 
@@ -13,6 +15,7 @@ import Loader from "../Loader"
 
 const Home = (props) => {
     const { bannerData, loading } = props
+    const { dispatch } = useCart();
 
     // Choose a random starting index to get a subset of 6 books
     const dataToDisplay = Array.isArray(bannerData.books) ? bannerData.books : [];
@@ -23,6 +26,9 @@ const Home = (props) => {
     // Extract a subset of 6 books starting from the random index
     const selectedBooks = dataToDisplay.slice(startIndex, startIndex + 6);
 
+    const handleAddToCart = (book) => {
+        dispatch({ type: 'ADD_TO_CART', payload: book });
+      };
 
 
 
@@ -40,7 +46,7 @@ const Home = (props) => {
     return (
         <div className="home-container">
 
-            {loading ? (<Loader/>
+            {loading ? (<Loader />
             ) : (
                 <>
                     <ul className="banner-container">
@@ -66,12 +72,15 @@ const Home = (props) => {
                         <ul className="card-container">
                             {bannerData.books.map((book) => (
                                 <li key={book.isbn13} className="card-list-item" >
-                                    <img className="card-image" src={book.image} alt={book.title} />
-                                    <div className="newbook-card-details">
-                                        <h1 className="card-title">{book.title}</h1>
-                                        <p className="card-price">₹{book.price}</p>
-                                        <button className="card-button" type="button">Order Now</button>
-                                    </div>
+                                    <Link to={`/Book/${book.isbn13}`}>
+                                        <img className="card-image" src={book.image} alt={book.title} />
+                                        <div className="newbook-card-details">
+                                            <h1 className="card-title">{book.title}</h1>
+                                            <p className="card-price">₹{book.price}</p>
+                                            <button className="card-button" type="button" onClick={()=>handleAddToCart(book)}>Add To Cart</button>
+                                        </div>
+                                    </Link>
+
                                 </li>
                             ))}
                         </ul>
