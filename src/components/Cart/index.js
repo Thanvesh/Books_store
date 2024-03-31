@@ -9,7 +9,7 @@ const Cart = () => {
     const { cartItems } = cartState;
 
     const [totalPrice, setTotalPrice] = useState(0);
-    const [selectedQuantities, setSelectedQuantities] = useState({});
+
     const [conveyText, setConveyText] = useState('');
     const exchangeRate = 75;
 
@@ -19,23 +19,26 @@ const Cart = () => {
         let total = 0;
         cartItems.forEach((item) => {
             const price = parseFloat(item.price.replace('$', '')) * exchangeRate;
-            const quantity = parseInt(selectedQuantities[item.isbn13] || 1, 10);
-            total += price * quantity;
+            //const quantity = parseInt(selectedQuantities[item.isbn13] || 1, 10);
+
+            total += price * item.quantity;
         });
         setTotalPrice(parseFloat(total.toFixed(2)));
         
     };
 
     calculateTotalPrice();
-}, [cartItems, selectedQuantities]);
+}, [cartItems]);
 
 
 
     const handleQuantityChange = (isbn13, quantity) => {
-        setSelectedQuantities((prevQuantities) => ({
-            ...prevQuantities,
-            [isbn13]: quantity,
-        }));
+   
+        const item = cartItems.find(item => item.isbn13 === isbn13);
+        dispatch({ type: 'ADD_TO_CART', payload:{
+            ...item,
+            quantity,
+          }, });
     };
 
     const handleRemoveFromCart = (isbn13) => {
@@ -57,6 +60,8 @@ const Cart = () => {
         // You can use your routing logic here
     };
 
+    console.log('Cart Items:', cartItems); 
+
     return (
         <div className="cart-container">
             <h2>Cart</h2>
@@ -65,8 +70,8 @@ const Cart = () => {
                     {cartItems.map((item) => {
   
                         const price = parseFloat(item.price.replace('$', '')) * exchangeRate;
-                        const quantity = parseInt(selectedQuantities[item.isbn13] || 1, 10);
-                        const itemTotalPrice = parseFloat((price*quantity).toFixed(2));
+
+                        const itemTotalPrice = parseFloat((price*item.quantity).toFixed(2));
 
                         return(
                             <li key={item.isbn13} className="cart-item">
@@ -79,7 +84,7 @@ const Cart = () => {
                             </div>
                             <div className="item-actions">
                                 <select className='quantity'
-                                    value={selectedQuantities[item.isbn13] || 1}
+                                    value={item.quantity || 1}
                                     onChange={(e) => handleQuantityChange(item.isbn13, parseInt(e.target.value, 10))}
 
                                 >

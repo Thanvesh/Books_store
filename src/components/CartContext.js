@@ -19,26 +19,29 @@ export const CartProvider = ({ children }) => {
           const updatedCartItems = [...state.cartItems];
           updatedCartItems[existingItemIndex] = {
             ...updatedCartItems[existingItemIndex],
-            quantity: updatedCartItems[existingItemIndex].quantity + action.payload.quantity,
-            
+            quantity: action.payload.quantity,
           };
+          console.log('Updated Cart Items:', updatedCartItems);
           return {
             ...state,
             cartItems: updatedCartItems,
           };
         } else {
           // If the book is not in the cart, add it
+          const newCartItems = [...state.cartItems, action.payload];
+          console.log('New Cart Items:', newCartItems);
           return {
             ...state,
-            cartItems: [...state.cartItems, action.payload],
-            
+            cartItems: newCartItems,
           };
         }
 
       case 'REMOVE_FROM_CART':
+        const updatedCartItems = state.cartItems.filter((item) => item.isbn13 !== action.payload);
+        console.log('Updated Cart Items:', updatedCartItems);
         return {
           ...state,
-          cartItems: state.cartItems.filter((item) => item.isbn13 !== action.payload),
+          cartItems: updatedCartItems,
         };
       // Add more cases for other actions (e.g., update quantity)
       default:
